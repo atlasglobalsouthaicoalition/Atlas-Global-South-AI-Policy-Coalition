@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -36,14 +37,22 @@ await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 
 for (const directory of directories) {
-  await cp(path.join(projectRoot, directory), path.join(outputDir, directory), {
+  const srcPath = path.join(projectRoot, directory);
+  if (!existsSync(srcPath)) {
+    continue;
+  }
+  await cp(srcPath, path.join(outputDir, directory), {
     recursive: true,
     force: true,
   });
 }
 
 for (const file of ["index.html", "404.html", "manus-routes.json", "favicon.ico", "favicon.svg", "favicon-16x16.png", "favicon-32x32.png", "favicon-48x48.png", "favicon-192x192.png", "favicon-512x512.png", "apple-touch-icon.png", "site.webmanifest", "google343e8e6554f1798d.html", "indexnow-key.txt", "llms.txt", "llms-full.txt"]) {
-  await cp(path.join(projectRoot, file), path.join(outputDir, file));
+  const srcFile = path.join(projectRoot, file);
+  if (!existsSync(srcFile)) {
+    continue;
+  }
+  await cp(srcFile, path.join(outputDir, file));
 }
 
 // These browser-side keys are generated at build time so static Vercel deploys work out of the box.
