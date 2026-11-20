@@ -1,14 +1,16 @@
 {
-  "name": "react-example",
-  "private": true,
-  "version": "0.0.0",
+  "name": "atlas-global-ai-policy-coalition",
+  "private": false,
+  "version": "1.0.0",
+  "description": "Static institutional website for the Atlas Global AI Policy Coalition.",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "dev": "tsx server.ts",
+    "build": "node scripts/build-static.mjs",
+    "start": "tsx server.ts",
+    "preview": "tsx server.ts",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit && node --check src/app.js"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
