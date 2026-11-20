@@ -1,5 +1,5 @@
-import { existsSync } from "node:fs";
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import fs from "node:fs";
+import { cp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -34,14 +34,14 @@ const directories = [
 ];
 
 await rm(outputDir, { recursive: true, force: true });
-await mkdir(outputDir, { recursive: true });
+fs.mkdirSync(outputDir, { recursive: true });
 
 for (const directory of directories) {
-  const srcPath = path.join(projectRoot, directory);
-  if (!existsSync(srcPath)) {
-    continue;
-  }
-  await cp(srcPath, path.join(outputDir, directory), {
+  const dirPath = path.join(projectRoot, directory);
+  const destPath = path.join(outputDir, directory);
+  fs.mkdirSync(dirPath, { recursive: true });
+  fs.mkdirSync(destPath, { recursive: true });
+  await cp(dirPath, destPath, {
     recursive: true,
     force: true,
   });
@@ -49,7 +49,7 @@ for (const directory of directories) {
 
 for (const file of ["index.html", "404.html", "manus-routes.json", "favicon.ico", "favicon.svg", "favicon-16x16.png", "favicon-32x32.png", "favicon-48x48.png", "favicon-192x192.png", "favicon-512x512.png", "apple-touch-icon.png", "site.webmanifest", "google343e8e6554f1798d.html", "indexnow-key.txt", "llms.txt", "llms-full.txt"]) {
   const srcFile = path.join(projectRoot, file);
-  if (!existsSync(srcFile)) {
+  if (!fs.existsSync(srcFile)) {
     continue;
   }
   await cp(srcFile, path.join(outputDir, file));
