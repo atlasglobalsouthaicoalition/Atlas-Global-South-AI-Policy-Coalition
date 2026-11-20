@@ -146,8 +146,9 @@ function missionVisionGrid() {
 function home() {
   const c = state.homepage || {};
   const metrics = state.metrics;
+  // The public member dataset may omit designation/country while profiles are still valid.
+  // Keep the homepage useful by selecting ordered source-audited records directly.
   const featured = [...state.members]
-    .filter((member) => member.country && member.designation)
     .sort((a, b) => (a.display_order || 999) - (b.display_order || 999))
     .slice(0, 6);
   const tracks = c.research_tracks || [];
@@ -390,7 +391,10 @@ function countries() { return `<main><section class="page-hero"><div class="wrap
 function leadershipOverview() { return `<main><section class="page-hero"><div class="wrap"><span class="eyebrow">LEADERSHIP & GOVERNANCE</span><h1>Founding Committee</h1><p>${esc(site.name)} is convened by ${esc(site.parent)}. The Founding Committee helps guide the Coalition’s early work and shared direction.</p></div></section>${committeeRosterSection('LEADERSHIP & GOVERNANCE', 'Members and roles', 'The public roster and responsibility areas supplied by the Coalition.')}</main>`; }
 function foundingCommittee() { return `<main><section class="page-hero"><div class="wrap"><span class="eyebrow">FOUNDING COMMITTEE</span><h1>${esc(state.committeeType)}</h1><p>${esc(state.committeeName)}, convened by ${esc(state.committeeHost)}.</p></div></section>${committeeRosterSection('FOUNDING COMMITTEE', 'Members and roles', 'The public roster and responsibility areas supplied by the Coalition.')}</main>`; }
 function committeeRosterSection(kicker, title, description) {
-  return `<section class="section committee-page"><div class="wrap">${sectionHeading(kicker, title, description)}<div class="committee-grid">${state.committee.map(committeeCard).join('')}</div>${committeeFaq()}</div></section>`;
+  const committeeMarkup = state.committee.length
+    ? `<div class="committee-grid">${state.committee.map(committeeCard).join('')}</div>`
+    : `<div class="data-note committee-data-note"><strong>The public committee roster is not populated yet.</strong><p>Verified founding-member profiles are available below from the public member registry. These profiles are not presented as committee appointments until the Coalition publishes the official roster and roles.</p></div><div class="member-grid committee-member-fallback">${state.members.filter((member) => member.membership_type === 'Founding Member').slice(0, 12).map((member) => featuredMemberCard(member)).join('')}</div>`;
+  return `<section class="section committee-page"><div class="wrap">${sectionHeading(kicker, title, description)}${committeeMarkup}${committeeFaq()}</div></section>`;
 }
 function committeeFaqItems() { return [['What is the Founding Committee?', `The ${state.committeeType} is the public leadership group that helps guide the Coalition’s early work and shared direction.`], ['How are roles described?', 'The public roster uses responsibility areas supplied by the Coalition, including research collaboration, public policy, AI governance, law and rights, Indigenous knowledge, multilingualism and cultural governance.'], ['How can researchers and institutions engage?', 'Researchers and institutions can explore membership, submit contributions for editorial review or contact the Coalition about research collaboration and policy engagement.']]; }
 function committeeFaq() { return `<div class="faq"><span class="eyebrow">ABOUT THE COMMITTEE</span><h3>Questions about governance</h3>${committeeFaqItems().map(([question, answer]) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join('')}</div>`; }

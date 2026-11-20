@@ -426,3 +426,10 @@ footer { background: #041326; }
   .about-section::before, .editorial-section::before { margin-top: -20px; margin-bottom: 22px; }
   .join-section::after { right: -12px; bottom: -18px; font-size: 180px; }
 }
+
+.committee-data-note { margin: 0 0 28px; }
+.committee-member-fallback { margin-top: 24px; }
+.committee-member-fallback .member-card { min-width: 0; }
+@media (max-width: 900px) {
+  .committee-member-fallback { gap: 14px; }
+}
