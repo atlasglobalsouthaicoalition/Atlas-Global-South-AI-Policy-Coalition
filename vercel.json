@@ -4,6 +4,7 @@
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "cleanUrls": true,
   "trailingSlash": true,
   "redirects": [
     {
@@ -98,7 +99,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "/((?!api/|assets/|data/|src/|public/|\\.well-known/|.*\\.[a-zA-Z0-9]+$).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]

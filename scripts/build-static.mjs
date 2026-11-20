@@ -7,6 +7,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
 const outputDir = path.resolve(__dirname, "..", "dist");
 
+console.log(`Build CWD: ${process.cwd()} | Project Root: ${projectRoot}`);
+
 const directories = [
   "about",
   "assets",
