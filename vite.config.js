@@ -28,6 +28,7 @@ const staticDirectories = [
   'publications',
   'reader-charter',
   '.well-known',
+  'src',
 ];
 
 export default defineConfig({
