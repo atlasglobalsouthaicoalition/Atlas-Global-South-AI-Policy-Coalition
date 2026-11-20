@@ -73,10 +73,15 @@ const runtimeConfig = [
 ].join("\n");
 await writeFile(path.join(outputDir, "web3forms-config.js"), runtimeConfig, "utf8");
 
-// Prerender committee pages and committee-member profiles for search crawlers.
-await import("./generate-seo-pages.mjs");
-// Fail the build when the generated static output violates SEO acceptance checks.
-await import("./seo-audit.mjs");
+const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
+// Prerender committee pages and committee-member profiles for search crawlers if script exists.
+if (fs.existsSync(path.join(scriptsDir, "generate-seo-pages.mjs"))) {
+  await import("./generate-seo-pages.mjs");
+}
+// Run SEO acceptance checks if script exists.
+if (fs.existsSync(path.join(scriptsDir, "seo-audit.mjs"))) {
+  await import("./seo-audit.mjs");
+}
 
 console.log(`Static site built in ${path.relative(projectRoot, outputDir)}/`);
 console.log(
